@@ -2,7 +2,7 @@
 
 ### Обзор
 
-*https://veletok.github.io/mesto/
+* https://veletok.github.io/mesto/
 -----
 
 Выбери своё место..
