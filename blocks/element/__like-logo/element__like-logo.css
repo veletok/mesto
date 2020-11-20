@@ -1,0 +1,8 @@
+.element__like-logo {
+  background-image: url(../../../images/element/like.svg);
+  width: 18px;
+  height: 20px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
