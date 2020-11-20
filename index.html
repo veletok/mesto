@@ -17,9 +17,9 @@
     <div class="profile__info">
       <div class="profile__text">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
-        <h3 class="profile__subtitle">Исследователь океана</h3>
+        <p class="profile__subtitle">Исследователь океана</p>
       </div>
-      <button class="profile__edit-button" onclick="popupOpened()">
+      <button class="profile__edit-button">
         <span class="profile__edit-logo"></span>
       </button>
     </div>
@@ -84,12 +84,12 @@
     </ul>
   </section>
   <footer class="footer">
-    © 2020 Mesto Russia
+    <p>© 2020 Mesto Russia</p>
   </footer>
 
   <section class="popup">
     <div class="popup__content">
-        <button type="button" class="popup__button-close" onclick="popupClosed()"></button>
+        <button type="button" class="popup__button-close"></button>
         <h3 class="popup__title">Редактировать профиль</h3>
         <form class="popup__form" name="information">
             <input type="text" class="popup__input popup__input_type_name" value="Жак-Ив Кусто" name="name">

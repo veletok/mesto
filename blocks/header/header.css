@@ -1,16 +1,18 @@
 .header {
   max-width: 880px;
-  height: 74px;
   margin: 0 auto;
   box-sizing: border-box;
   border-bottom: 1px solid rgba(84,84,84,0.7);
+  padding-bottom: 36px;
   margin-bottom: 36px;
 }
 
 @media (max-width: 898px){
   .header{
-    max-width: auto;
+    max-width: none;
     width: 100%;
+    height: 56px;
     padding: 0 27px;
+    margin-bottom: 42px;
   }
 }

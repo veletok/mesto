@@ -1,8 +1,8 @@
 .element__flex {
   display: flex;
   justify-content: space-between;
-  padding: 0 15px 0 21px;
+  padding: 25px 15px 24px 21px;
   box-sizing: border-box;
-  height: 74px;
   align-items: center;
+  height: 100%;
 }

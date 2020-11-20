@@ -1,8 +1,9 @@
 .element {
-  width: 282px;
-  height: 361px;
+  width: 280px;
   background: #FFFFFF;
   border-radius: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 @media (max-width: 930px){
