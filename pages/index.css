@@ -1,7 +1,7 @@
 @import url(../vendor/normalize.css);
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 /*Отдельные блоки*/
-@import url(../blocks/page/page.css);
+@import url(../blocks/main/main.css);
 
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
@@ -23,7 +23,6 @@
 @import url(../blocks/element/__flex/element__flex.css);
 @import url(../blocks/element/__text/element__text.css);
 @import url(../blocks/element/__like-button/element__like-button.css);
-@import url(../blocks/element/__like-logo/element__like-logo.css);
 
 @import url(../blocks/footer/footer.css);
 
