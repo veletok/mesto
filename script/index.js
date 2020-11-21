@@ -15,6 +15,7 @@ function popupStatus (status) {
   if (status === true) {
     popup.classList.add('popup_opened');
     profileName.value = profileTitle.textContent;
+    profileProfession.value = profileSubtitle.textContent;
   }
   else {
     popup.classList.remove('popup_opened');
@@ -23,16 +24,17 @@ function popupStatus (status) {
 
 editButton.addEventListener('click', function () {
   popupStatus(true);
-  profileProfession.value = profileSubtitle.textContent;
 });
 
 closeButton.addEventListener('click', function () {
   popupStatus(false);
 });
 
-formElement.addEventListener('submit', function(evt) {
+function formSubmitHandler(evt) {
   evt.preventDefault();
   profileTitle.textContent = profileName.value;
   profileSubtitle.textContent = profileProfession.value;
   popupStatus(false);
-});
+}
+
+formElement.addEventListener('submit', formSubmitHandler);
