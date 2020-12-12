@@ -1,20 +1,24 @@
-let profileTitle = document.querySelector('.profile__title');
-let profileSubtitle = document.querySelector('.profile__subtitle');
+const profileTitle = document.querySelector('.profile__title');
+const profileSubtitle = document.querySelector('.profile__subtitle');
+const popupEdit = document.querySelector('.popup-edit');
+const popupAddItem = document.querySelector('.popup-add');
+const popupImg = document.querySelector('.popup-image');
 
-let popupType = '';
-let popupEdit = document.querySelector('.popup-edit');
-let popupImg = document.querySelector('.popup-image');
-let popupTitle = document.querySelector('.popup__title');
-
-let formElement = document.querySelector('.popup__form');
+const formElementEdit = document.querySelector('.popup__form_edit');
+const formElementAdd = document.querySelector('.popup__form_add');
 
 const editButton = document.querySelector('.profile__edit-button');
 const addButton = document.querySelector('.profile__add-button');
 const closeButton = document.querySelectorAll('.popup__button-close');
 const likeButton = document.querySelector('.element__like-button');
 
-let profileName = document.querySelector('.popup__input_type_name');
-let profileProfession = document.querySelector('.popup__input_type_title');
+const profileName = document.querySelector('.popup__input_type_name');
+const profileProfession = document.querySelector('.popup__input_type_title');
+
+const elementAddTitle = document.querySelector('.popup__input_type_addtitle');
+const elementAddSrc = document.querySelector('.popup__input_type_img-src');
+
+const elementTemplate = document.querySelector('#element-template').content;
 
 const initialCards = [
   {
@@ -43,77 +47,71 @@ const initialCards = [
   }
 ];
 
-function tooglePopup (type) {
-  popupType = type;
-
-  if (!type) {
-    popupEdit.classList.remove('popup_opened');
-    popupImg.classList.remove('popup_opened');
-    return;
-  }
-
-  if (type === 'editInfo') {
-    popupEdit.classList.add('popup_opened');
-    profileName.value = profileTitle.textContent;
-    profileProfession.value = profileSubtitle.textContent;
-  }
-  else if (type === 'addItem') {
-    popupEdit.classList.add('popup_opened');
-    popupTitle.textContent = 'Новое место'
-    profileName.value = '';
-    profileProfession.value = '';
-    profileName.placeholder = 'Название';
-    profileProfession.placeholder = 'Ссылка на картинку';
-  }
+function openAddPopup () {
+  popupAddItem.classList.add('popup_opened');
 }
 
-function formSubmitHandler(evt) {
-  if (profileName.value != '' && profileProfession.value != ''){
-    if (popupType === 'editInfo') {
-      evt.preventDefault();
-      profileTitle.textContent = profileName.value;
-      profileSubtitle.textContent = profileProfession.value;
-      tooglePopup(false);
-    }
-    else if(popupType === 'addItem') {
-      evt.preventDefault();
-      addElement(profileName.value, profileProfession.value);
-      tooglePopup(false);
-    }
-  }
-  else {
-    tooglePopup(false);
-  }
+function openEditPopup () {
+  popupEdit.classList.add('popup_opened');
+  editInfoPopupSettings();
+}
+
+function closePopup () {
+  popupEdit.classList.remove('popup_opened');
+  popupAddItem.classList.remove('popup_opened');
+  popupImg.classList.remove('popup_opened');
+}
+
+function editInfoPopupSettings () {
+  profileName.value = profileTitle.textContent;
+  profileProfession.value = profileSubtitle.textContent;
+}
+
+function editSubmitHandler(evt) {
+  evt.preventDefault();
+  profileTitle.textContent = profileName.value;
+  profileSubtitle.textContent = profileProfession.value;
+  closePopup ();
+}
+
+function addSubmitHandler(evt) {
+  evt.preventDefault();
+  createElement(elementAddTitle.value, elementAddSrc.value);
+  closePopup ();
 }
 
 editButton.addEventListener('click', function () {
-  tooglePopup('editInfo');
+  openEditPopup ();
 });
 
 addButton.addEventListener('click', function () {
-  tooglePopup('addItem');
+  openAddPopup ();
 });
 
 closeButton.forEach(function (close) {
   close.addEventListener('click', function () {
-  tooglePopup(false);
+    closePopup ();
 })});
 
-formElement.addEventListener('submit', formSubmitHandler);
+formElementEdit.addEventListener('submit', editSubmitHandler);
+formElementAdd.addEventListener('submit', addSubmitHandler);
 
 
 
 
 const cardsElements = document.querySelector('.elements');
 
-function addElement(titleValue, imgValue) {
-  const elementTemplate = document.querySelector('#element-template').content;
+function createElement(titleValue, imgValue) {
   const itemElement = elementTemplate.cloneNode(true);
   const imgPopupButton = itemElement.querySelector('.element__img');
+  const imgPopupTitle = itemElement.querySelector('.element__text');
 
-  itemElement.querySelector('.element__img').src = imgValue;
-  itemElement.querySelector('.element__text').textContent = titleValue;
-  itemElement.querySelector('.element__img').alt = 'Фото ' + titleValue;
+  const popupZoomImage = popupImg.querySelector('.popup-image__img');
+  const popupZoomTitle = popupImg.querySelector('.popup-image__title');
+
+  imgPopupButton.src = imgValue;
+  imgPopupTitle.textContent = titleValue;
+  imgPopupButton.alt = `Фото ${titleValue}`;
 
   itemElement.querySelector('.element__like-button').addEventListener('click', function (evt) {
     evt.target.classList.toggle('element__like-button_active');
@@ -125,17 +123,21 @@ function addElement(titleValue, imgValue) {
 
   imgPopupButton.addEventListener('click', function () {
     popupImg.classList.add('popup_opened');
-    popupImg.querySelector('.popup-image__img').alt = 'Фото ' + titleValue;
-    popupImg.querySelector('.popup-image__img').src = imgValue;
-    popupImg.querySelector('.popup-image__title').textContent = titleValue;
+    popupZoomImage.alt = 'Фото ' + titleValue;
+    popupZoomImage.src = imgValue;
+    popupZoomTitle.textContent = titleValue;
   });
 
-  cardsElements.prepend(itemElement);
+  addElement(itemElement);
+}
+
+function addElement (item) {
+  cardsElements.prepend(item);
 }
 
 function currentElements() {
   initialCards.forEach( function (element) {
-    addElement(element.name, element.link);
+    createElement(element.name, element.link);
   });
 }
 

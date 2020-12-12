@@ -35,9 +35,21 @@
     <div class="popup__content">
       <button type="button" class="popup__button-close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" name="information">
+      <form class="popup__form popup__form_edit" name="information">
           <input type="text" class="popup__input popup__input_type_name" value="Жак-Ив Кусто" name="name">
           <input type="text" class="popup__input popup__input_type_title" value="Исследователь океана" name="title">
+          <button type="submit" class="popup__button-submit">Сохранить</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="popup popup-add">
+    <div class="popup__content">
+      <button type="button" class="popup__button-close"></button>
+      <h3 class="popup__title">Новое место</h3>
+      <form class="popup__form popup__form_add" name="information">
+          <input type="text" class="popup__input popup__input_type_addtitle"  placeholder="Название" name="name">
+          <input type="text" class="popup__input popup__input_type_img-src" placeholder="Ссылка на картинку" name="title">
           <button type="submit" class="popup__button-submit">Сохранить</button>
       </form>
     </div>
