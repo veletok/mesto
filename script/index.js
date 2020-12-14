@@ -51,9 +51,12 @@ let elementPopup = '';
 
 function addElement (titleValue, imgValue) {
   let item = createElement (titleValue, imgValue);
-  cardsElements.prepend(item);
+  return item;
 }
 
+function prependElementList (item) {
+  cardsElements.prepend(item);
+}
 function openPopup (element) {
     elementPopup = element;
     element.classList.add('popup_opened');
@@ -78,7 +81,8 @@ function editSubmitHandler(evt) {
 
 function addSubmitHandler(evt) {
   evt.preventDefault();
-  addElement(elementAddTitle.value, elementAddSrc.value);
+  let item = addElement(elementAddTitle.value, elementAddSrc.value);
+  prependElementList(item);
   closePopup (popupAddItem);
 }
 
@@ -135,7 +139,8 @@ function createElement(titleValue, imgValue) {
 
 function currentElements() {
   initialCards.forEach( function (element) {
-    addElement(element.name, element.link);
+    let item = addElement(element.name, element.link);
+    prependElementList(item);
   });
 }
 
