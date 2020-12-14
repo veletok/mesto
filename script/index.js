@@ -47,39 +47,21 @@ const initialCards = [
   }
 ];
 
-let typePopup = '';
+let elementPopup = '';
 
 function addElement (titleValue, imgValue) {
   let item = createElement (titleValue, imgValue);
   cardsElements.prepend(item);
 }
 
-function openPopup (type) {
-  if (type === popupAddItem) {
-    popupAddItem.classList.add('popup_opened');
-    typePopup = popupAddItem;
-  }
-  else if (type === popupEdit) {
-    popupEdit.classList.add('popup_opened');
-    editInfoPopupSettings();
-    typePopup = popupEdit;
-  }
-  else if (type === popupImg) {
-    popupImg.classList.add('popup_opened');
-    typePopup = popupImg;
-  }
+function openPopup (element) {
+    elementPopup = element;
+    element.classList.add('popup_opened');
 }
 
-function closePopup (type) {
-  if (type === popupEdit) {
-    popupEdit.classList.remove('popup_opened');
-  }
-  else if (type === popupAddItem) {
-    popupAddItem.classList.remove('popup_opened');
-  }
-  else if (type === popupImg) {
-    popupImg.classList.remove('popup_opened');
-  }
+function closePopup (element) {
+    console.log(element);
+    element.classList.remove('popup_opened');
 }
 
 function editInfoPopupSettings () {
@@ -110,7 +92,7 @@ addButton.addEventListener('click', function () {
 
 closeButton.forEach(function (close) {
   close.addEventListener('click', function () {
-    closePopup (typePopup);
+    closePopup (elementPopup);
 })});
 
 formElementEdit.addEventListener('submit', editSubmitHandler);
