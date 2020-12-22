@@ -45,24 +45,28 @@ function setEventListeners(formElement, validationParams) {
   const submitButton = formElement.querySelector(
     validationParams.submitButtonSelector
   );
-
   inputList.forEach((inputElement) => {
+    if(inputElement.classList.contains('popup__input_type_name')) {
+      buttonToogle(formElement, inputElement, validationParams, submitButton);
+    }
     inputElement.addEventListener("input", () => {
-      checkInputValidity(formElement, inputElement, validationParams);
+      buttonToogle(formElement, inputElement, validationParams, submitButton);
+    });
+  });
+}
+
+function buttonToogle(formElement, inputElement, validationParams, submitButton) {
+  checkInputValidity(formElement, inputElement, validationParams);
       toggleButtonState(
         submitButton,
         formElement.checkValidity(),
         validationParams
       );
-    });
-  });
 }
-
 function enableValidation(validationParams) {
   const formList = document.querySelectorAll(validationParams.formSelector);
   formList.forEach((formElement) => {
     setEventListeners(formElement, validationParams);
-
     formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
