@@ -42,12 +42,10 @@ function closePopup(element) {
 function editInfoPopupSettings() {
   profileName.value = profileTitle.textContent;
   profileProfession.value = profileSubtitle.textContent;
-  enableValidation(validationParams);
 }
 
 function addPopupSettings() {
   formElementAdd.reset();
-  enableValidation(validationParams);
 }
 function editSubmitHandler() {
   profileTitle.textContent = profileName.value;
