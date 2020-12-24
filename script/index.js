@@ -28,7 +28,6 @@ function prependElementList(item) {
 function openPopup(element) {
   element.classList.add("popup_opened");
   const popupOpened = document.querySelector(".popup_opened");
-  enableValidation(validationParams);
   popupClickClose(popupOpened);
 }
 
@@ -36,6 +35,11 @@ function closePopup(element) {
   element.classList.remove("popup_opened");
   if(element === popupAddItem) {
     hideInputError(formElementAdd, elementAddTitle, validationParams);
+    hideInputError(formElementAdd, elementAddSrc, validationParams);
+  }
+  else if(element === popupEdit) {
+    hideInputError(formElementEdit, profileName, validationParams);
+    hideInputError(formElementEdit, profileProfession, validationParams);
   }
 }
 
