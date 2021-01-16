@@ -1,8 +1,12 @@
+import {Card} from './card.js';
+import {initialCards} from './initial-сards.js';
+import {validationParams} from './validation-params.js';
+import {Validator} from './validator.js';
+
 const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
 const popupEdit = document.querySelector(".popup-edit");
 const popupAddItem = document.querySelector(".popup-add");
-const popupImg = document.querySelector(".popup-image");
 
 const formElementEdit = document.querySelector(".popup__form_edit");
 const formElementAdd = document.querySelector(".popup__form_add");
@@ -19,28 +23,36 @@ const profileProfession = document.querySelector(".popup__input_type_title");
 const elementAddTitle = document.querySelector(".popup__input_type_addtitle");
 const elementAddSrc = document.querySelector(".popup__input_type_img-src");
 
-const elementTemplate = document.querySelector("#element-template").content;
-
+export const popupImg = document.querySelector(".popup-image");
 
 function prependElementList(item) {
   cardsElements.prepend(item);
 }
-function openPopup(element) {
+
+//Открывает попап
+export function openPopup(element) {
+  openPopupParams(element);
+  if (element != popupImg) {
+  const form = element.querySelector('.popup__form')
+  const validationElement = new Validator(validationParams, form);
+  validationElement.enableValidation();
+  }
+}
+
+function openPopupParams(element) {
   element.classList.add("popup_opened");
   const popupOpened = document.querySelector(".popup_opened");
   popupClickClose(popupOpened);
 }
-
+//Закрывает попап
 function closePopup(element) {
-  element.classList.remove("popup_opened");
-  if(element === popupAddItem) {
-    hideInputError(formElementAdd, elementAddTitle, validationParams);
-    hideInputError(formElementAdd, elementAddSrc, validationParams);
-  }
-  else if(element === popupEdit) {
-    hideInputError(formElementEdit, profileName, validationParams);
-    hideInputError(formElementEdit, profileProfession, validationParams);
-  }
+  element.classList.remove("popup_opened")
+  const form = element.querySelector('.popup__form');
+  const validationElement = new Validator(validationParams, form);
+  const inputList = element.querySelectorAll(validationParams.inputSelector);
+  inputList.forEach((inputElement) => {
+    validationElement.hideInputError(inputElement);
+  });
 }
 
 function editInfoPopupSettings() {
@@ -58,8 +70,13 @@ function editSubmitHandler() {
 }
 
 function addSubmitHandler() {
-  const item = createElement(elementAddTitle.value, elementAddSrc.value);
-  prependElementList(item);
+  const data = {
+      name: elementAddTitle.value,
+      link: elementAddSrc.value
+    }
+  const card = new Card(data, '#element-template');
+  const cardElement = card.generateCard();
+  prependElementList(cardElement);
   closePopup(popupAddItem);
 }
 
@@ -125,45 +142,14 @@ function popupSelectorClose(evt) {
 
 const cardsElements = document.querySelector(".elements");
 
-function createElement(titleValue, imgValue) {
-  const itemElement = elementTemplate.cloneNode(true);
-  const imgPopupButton = itemElement.querySelector(".element__img");
-  const imgPopupTitle = itemElement.querySelector(".element__text");
-
-  const popupZoomImage = popupImg.querySelector(".popup-image__img");
-  const popupZoomTitle = popupImg.querySelector(".popup-image__title");
-
-  imgPopupButton.src = imgValue;
-  imgPopupTitle.textContent = titleValue;
-  imgPopupButton.alt = `Фото ${titleValue}`;
-
-  itemElement
-    .querySelector(".element__like-button")
-    .addEventListener("click", function (evt) {
-      evt.target.classList.toggle("element__like-button_active");
-    });
-
-  itemElement
-    .querySelector(".element__delete-button")
-    .addEventListener("click", function (evt) {
-      evt.target.closest(".element").remove();
-    });
-
-  imgPopupButton.addEventListener("click", function () {
-    popupZoomImage.alt = "Фото " + titleValue;
-    popupZoomImage.src = imgValue;
-    popupZoomTitle.textContent = titleValue;
-    openPopup(popupImg);
-  });
-
-  return itemElement;
-}
-
+//Проходим элементы из объекта, создаем карточки
 function currentElements() {
-  initialCards.forEach(function (element) {
-    const item = createElement(element.name, element.link);
-    prependElementList(item);
+  initialCards.forEach((data) => {
+    const card = new Card(data, '#element-template');
+    const cardElement = card.generateCard();
+    prependElementList(cardElement);
   });
 }
 
+//Вывзываем функцию, которая выводит карточки из объекта
 currentElements();
