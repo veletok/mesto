@@ -1,4 +1,4 @@
-import {openPopup, popupImg} from './index.js'
+import {openPopup, popupImg} from './popups.js'
 
 export class Card {
   constructor(data, cardSelector) {
@@ -17,9 +17,10 @@ export class Card {
     this._element = this._getTemplate();
     this._setEventListeners();
 
-    this._element.querySelector(".element__img").src = this._imgValue;
+    const elementImg = this._element.querySelector(".element__img");
+    elementImg.src = this._imgValue;
     this._element.querySelector(".element__text").textContent = this._titleValue;
-    this._element.querySelector(".element__img").alt = `Фото ${this._titleValue}`;
+    elementImg.alt = `Фото ${this._titleValue}`;
 
     return this._element;
   }
@@ -46,11 +47,13 @@ export class Card {
   //Удаляет элемент
   _handleDeleteClick(evt) {
     evt.target.closest(".element").remove();
+    this._element = null;
   }
   //Вызывает попап с картинкой
   _popupImgZoom() {
-    popupImg.querySelector(".popup-image__img").alt = "Фото " + this._titleValue;
-    popupImg.querySelector(".popup-image__img").src = this._imgValue;
+    const popupImageImg = popupImg.querySelector(".popup-image__img");
+    popupImageImg.alt = `Фото ${this._titleValue}`;
+    popupImageImg.src = this._imgValue;
     popupImg.querySelector(".popup-image__title").textContent = this._titleValue;
     openPopup(popupImg);
   }

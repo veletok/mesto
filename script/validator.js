@@ -9,23 +9,20 @@ export class Validator {
     this._formElement.addEventListener("submit", (evt) => {
       evt.preventDefault();
     });
-    const submitButton = this._formElement.querySelector(
-      this._validationParams.submitButtonSelector
-    );
-    this._toggleButtonState(submitButton, this._formElement.checkValidity());
+    this._toggleButtonState(this._submitButton, this._formElement.checkValidity());
   }
 
   _showInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
-    errorElement.classList.add(this._validationParams.errorClass);
-    errorElement.textContent = inputElement.validationMessage;
+    this._errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+    this._errorElement.classList.add(this._validationParams.errorClass);
+    this._errorElement.textContent = inputElement.validationMessage;
     inputElement.classList.add(this._validationParams.inputErrorClass);
   }
 
   hideInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
-    errorElement.classList.remove(this._validationParams.errorClass);
-    errorElement.textContent = "";
+    this._errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+    this._errorElement.classList.remove(this._validationParams.errorClass);
+    this._errorElement.textContent = "";
     inputElement.classList.remove(this._validationParams.inputErrorClass);
   }
 
@@ -48,26 +45,26 @@ export class Validator {
   }
 
   _setEventListeners() {
-    const inputList = this._formElement.querySelectorAll(
+    this._inputList = this._formElement.querySelectorAll(
       this._validationParams.inputSelector
     );
-    const submitButton = this._formElement.querySelector(
+    this._submitButton = this._formElement.querySelector(
       this._validationParams.submitButtonSelector
     );
-    inputList.forEach((inputElement) => {
+    this._inputList.forEach((inputElement) => {
       if (inputElement.classList.contains('popup__input_type_name')) {
-        this._buttonToogle(inputElement, submitButton);
+        this._buttonToogle(inputElement);
       }
       inputElement.addEventListener("input", () => {
-        this._buttonToogle(inputElement, submitButton);
+        this._buttonToogle(inputElement);
       });
     });
   }
 
-  _buttonToogle(inputElement, submitButton) {
+  _buttonToogle(inputElement) {
     this._checkInputValidity(inputElement);
     this._toggleButtonState(
-      submitButton,
+      this._submitButton,
       this._formElement.checkValidity(),
       this._validationParams
     );
