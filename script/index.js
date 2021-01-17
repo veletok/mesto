@@ -1,12 +1,9 @@
 import {Card} from './card.js';
 import {initialCards} from './initial-сards.js';;
-import {openPopup, closePopup, popupEdit, popupAddItem, popupImg, validateForms} from './popups.js'
+import {openPopup, closePopup, popupEdit, popupAddItem, popupImg, validateForms, formElementEdit, formElementAdd} from './popups.js'
 
 const profileTitle = document.querySelector(".profile__title");
 const profileSubtitle = document.querySelector(".profile__subtitle");
-
-const formElementEdit = document.querySelector(".popup__form_edit");
-const formElementAdd = document.querySelector(".popup__form_add");
 
 const editButton = document.querySelector(".profile__edit-button");
 const addButton = document.querySelector(".profile__add-button");
@@ -44,7 +41,7 @@ function addSubmitHandler() {
       name: elementAddTitle.value,
       link: elementAddSrc.value
     }
-  cardCreate(data);
+  createCard(data);
   closePopup(popupAddItem);
 }
 
@@ -79,12 +76,12 @@ const cardsElements = document.querySelector(".elements");
 //Проходим элементы из объекта, создаем карточки
 function addPageElements() {
   initialCards.forEach((data) => {
-    cardCreate(data);
+    createCard(data);
   });
 }
 
 //Функция создания карты
-function cardCreate (data) {
+function createCard (data) {
   const card = new Card(data, '#element-template');
   const cardElement = card.generateCard();
   prependElementList(cardElement);

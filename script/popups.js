@@ -4,12 +4,17 @@ import {Validator} from './validator.js'
 export const popupEdit = document.querySelector(".popup-edit");
 export const popupAddItem = document.querySelector(".popup-add");
 export const popupImg = document.querySelector(".popup-image");
+export const formElementEdit = document.querySelector(".popup__form_edit");
+export const formElementAdd = document.querySelector(".popup__form_add");
+
+const popupAddButtonSubmit = document.querySelector(".popup__button-submit_addcard");
 
 export function openPopup(element) {
   element.classList.add("popup_opened");
   const popupOpened = document.querySelector(".popup_opened");
   popupClickClose(popupOpened);
-  validateForms ();
+  popupAddButtonSubmit.classList.add(validationParams.inactiveButtonClass);
+  popupAddButtonSubmit.disabled = true;
 }
 
 let validationElement = {};
@@ -61,9 +66,10 @@ function escClose(evt) {
 }
 
 export function validateForms () {
-  const formList = document.querySelectorAll(validationParams.formSelector);
-  formList.forEach((form) => {
-    validationElement[form.name] = new Validator(validationParams, form);
-    validationElement[form.name].enableValidation();
-  })
+  //Валидируем форму редактирования
+  validationElement[formElementEdit.name] = new Validator(validationParams, formElementEdit);
+  validationElement[formElementEdit.name].enableValidation();
+  // Валидируем форму добавления
+  validationElement[formElementAdd.name] = new Validator(validationParams, formElementAdd);
+  validationElement[formElementAdd.name].enableValidation();
 }
