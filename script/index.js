@@ -1,92 +1,90 @@
 import {Card} from './card.js';
-import {initialCards} from './initial-сards.js';;
-import {openPopup, closePopup, popupEdit, popupAddItem, popupImg, validateForms, formElementEdit, formElementAdd} from './popups.js'
+import {validationParams, profileTitle, profileSubtitle, initialCards, popupImg, popupEdit, popupAddItem, formElementAdd, formElementEdit, editButton, addButton, buttonPopupAddClose, buttonPopupEditClose, buttonPopupImageClose, profileName, profileProfession, cardListSection} from '../utils/constants.js';
+import {PopupWithImage} from './PopupWithImage.js';
+import {PopupWithForm} from './PopupWithForm.js';
+import Section from './section.js';
+import UserInfo from './userinfo.js';
+import {Validator} from './validator.js'
 
-const profileTitle = document.querySelector(".profile__title");
-const profileSubtitle = document.querySelector(".profile__subtitle");
+const userInfo = new UserInfo(profileTitle, profileSubtitle);
 
-const editButton = document.querySelector(".profile__edit-button");
-const addButton = document.querySelector(".profile__add-button");
-const buttonPopupEditClose = document.querySelector(".popup__edit-close");
-const buttonPopupAddClose = document.querySelector(".popup__add-close");
-const buttonPopupImageClose = document.querySelector(".popup__image-close");
+const popupWithImage = new PopupWithImage(popupImg);
 
-const profileName = document.querySelector(".popup__input_type_name");
-const profileProfession = document.querySelector(".popup__input_type_title");
+const addPopup = new PopupWithForm(
+  popupAddItem,{
+  handleFormSubmit: (data) => {
+    createCard(data);
+    addPopup.close();
+  }
+});
 
-const elementAddTitle = document.querySelector(".popup__input_type_addtitle");
-const elementAddSrc = document.querySelector(".popup__input_type_img-src");
-
-function prependElementList(item) {
-  cardsElements.prepend(item);
-}
-
-
-function editInfoPopupSettings() {
-  profileName.value = profileTitle.textContent;
-  profileProfession.value = profileSubtitle.textContent;
-}
-
-function addPopupSettings() {
-  formElementAdd.reset();
-}
-function editSubmitHandler() {
-  profileTitle.textContent = profileName.value;
-  profileSubtitle.textContent = profileProfession.value;
-  closePopup(popupEdit);
-}
-
-function addSubmitHandler() {
-  const data = {
-      name: elementAddTitle.value,
-      link: elementAddSrc.value
-    }
-  createCard(data);
-  closePopup(popupAddItem);
-}
+const editPopup = new PopupWithForm(
+  popupEdit,{
+  handleFormSubmit: (data) => {
+    userInfo.setUserInfo(data);
+    editPopup.close();
+  }
+});
 
 editButton.addEventListener("click", function () {
-  editInfoPopupSettings();
-  openPopup(popupEdit);
+  const data = userInfo.getUserInfo();
+  profileName.value = data.profilename;
+  profileProfession.value = data.profileprofession;
+  userInfo.setUserInfo(data);
+  editPopup.open();
+});
+
+
+buttonPopupEditClose.addEventListener("click", function () {
+  editPopup.close();
 });
 
 addButton.addEventListener("click", function () {
-  addPopupSettings();
-  openPopup(popupAddItem);
+  addPopup.open();
 });
 
-buttonPopupEditClose.addEventListener("click", function () {
-  closePopup(popupEdit);
-});
 
 buttonPopupAddClose.addEventListener("click", function () {
-  closePopup(popupAddItem);
+  addPopup.close();
 });
 
 buttonPopupImageClose.addEventListener("click", function () {
-  closePopup(popupImg);
+  popupWithImage.close();
 });
-
-
-formElementEdit.addEventListener("submit", editSubmitHandler);
-formElementAdd.addEventListener("submit", addSubmitHandler);
-
-const cardsElements = document.querySelector(".elements");
-
-//Проходим элементы из объекта, создаем карточки
-function addPageElements() {
-  initialCards.forEach((data) => {
-    createCard(data);
-  });
-}
 
 //Функция создания карты
 function createCard (data) {
-  const card = new Card(data, '#element-template');
+  const card = new Card(data, '#element-template',{
+    handleCardClick: () => {
+      popupWithImage.open(data);
+  }});
   const cardElement = card.generateCard();
-  prependElementList(cardElement);
+  cardList.setItem(cardElement);
 }
 
-//Вывзываем функцию, которая выводит карточки из объекта
-addPageElements();
-validateForms();
+const cardList = new Section({
+  data: initialCards,
+  renderer: (data) => {
+    const card = new Card(data, '#element-template',{
+      handleCardClick: () => {
+        popupWithImage.open(data);
+    }});
+    const cardElement = card.generateCard();
+    cardList.setItem(cardElement);
+    },
+  },
+  cardListSection
+);
+
+export let validationElement = {};
+
+export function validateForms () {
+  validationElement[formElementEdit.name] = new Validator(validationParams, formElementEdit);
+  validationElement[formElementEdit.name].enableValidation();
+
+  validationElement[formElementAdd.name] = new Validator(validationParams, formElementAdd);
+  validationElement[formElementAdd.name].enableValidation();
+};
+
+validateForms ();
+cardList.renderItems();

@@ -1,10 +1,9 @@
-import {openPopup, popupImg} from './popups.js'
-
 export class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, {handleCardClick}) {
     this._titleValue = data.name;
     this._imgValue = data.link;
     this._cardSelector = cardSelector;
+    this._handleCardClick = handleCardClick;
   }
 
   //Получаем template
@@ -37,7 +36,7 @@ export class Card {
     });
     //Срабатывает при клике на картинку
     this._element.querySelector(".element__img").addEventListener("click", () => {
-      this._popupImgZoom();
+      this._handleCardClick();
     });
   }
   //Срабатывает при клике на кнопку лайка, переключает его состояние
@@ -48,13 +47,5 @@ export class Card {
   _handleDeleteClick(evt) {
     evt.target.closest(".element").remove();
     this._element = null;
-  }
-  //Вызывает попап с картинкой
-  _popupImgZoom() {
-    const popupImageImg = popupImg.querySelector(".popup-image__img");
-    popupImageImg.alt = `Фото ${this._titleValue}`;
-    popupImageImg.src = this._imgValue;
-    popupImg.querySelector(".popup-image__title").textContent = this._titleValue;
-    openPopup(popupImg);
   }
 }
