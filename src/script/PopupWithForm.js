@@ -16,9 +16,7 @@ export class PopupWithForm extends Popup {
     popupAddButtonSubmit.disabled = true;
     popupAddButtonSubmit.classList.add(validationParams.inactiveButtonClass);
     this._inputList = this._popup.querySelectorAll(validationParams.inputSelector);
-    console.log(this._validatorForm)
     this._inputList.forEach((inputElement) => {
-      console.log(this._validatorForm)
       this._validatorForm.hideInputError(inputElement);
     });
 
