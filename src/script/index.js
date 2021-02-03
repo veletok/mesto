@@ -1,3 +1,4 @@
+import '../pages/index.css';
 import {Card} from './card.js';
 import {validationParams, profileTitle, profileSubtitle, initialCards, popupImg, popupEdit, popupAddItem, formElementAdd, formElementEdit, editButton, addButton, buttonPopupAddClose, buttonPopupEditClose, buttonPopupImageClose, profileName, profileProfession, cardListSection} from '../utils/constants.js';
 import {PopupWithImage} from './PopupWithImage.js';

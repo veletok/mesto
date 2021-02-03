@@ -5,20 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Vitaliy Kotelevskiy" />
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
-    <link href="pages/index.css" rel="stylesheet" />
     <title>Сайт "Место"</title>
   </head>
   <body class="main">
     <header class="header">
       <img
-        src="images/header/header-logo.svg"
+        src="<%=require('./images/header/header-logo.svg')%>"
         alt="Логотип 'Mesto'"
         class="header__logo"
       />
     </header>
     <section class="profile">
       <img
-        src="images/profile/man.jpg"
+        src="<%=require('./images/profile/man.jpg')%>"
         alt="Жак-Ив Кусто"
         class="profile__img"
       />
@@ -129,6 +128,5 @@
         </div>
       </li>
     </template>
-    <script src="script/index.js" type="module"></script>
   </body>
 </html>
