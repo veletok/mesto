@@ -1,18 +1,17 @@
 import '../pages/index.css';
-import {Card} from './card.js';
-import {validationParams, profileTitle, profileSubtitle, initialCards, popupImg, popupEdit, popupAddItem, formElementAdd, formElementEdit, editButton, addButton, buttonPopupAddClose, buttonPopupEditClose, buttonPopupImageClose, profileName, profileProfession, cardListSection} from '../utils/constants.js';
+import {Card} from './Card.js';
+import {validationAddPopup, validationEditPopup, profileTitle, profileSubtitle, initialCards, popupImg, popupEdit, popupAddItem, editButton, addButton, buttonPopupAddClose, buttonPopupEditClose, buttonPopupImageClose, profileName, profileProfession, cardListSection} from '../utils/constants.js';
 import {PopupWithImage} from './PopupWithImage.js';
 import {PopupWithForm} from './PopupWithForm.js';
-import Section from './section.js';
-import UserInfo from './userinfo.js';
-import {Validator} from './validator.js'
+import Section from './Section.js';
+import UserInfo from './Userinfo.js';
 
 const userInfo = new UserInfo(profileTitle, profileSubtitle);
 
 const popupWithImage = new PopupWithImage(popupImg);
 
 const addPopup = new PopupWithForm(
-  popupAddItem,{
+  popupAddItem, validationAddPopup, {
   handleFormSubmit: (data) => {
     createCard(data);
     addPopup.close();
@@ -20,12 +19,16 @@ const addPopup = new PopupWithForm(
 });
 
 const editPopup = new PopupWithForm(
-  popupEdit,{
+  popupEdit, validationEditPopup, {
   handleFormSubmit: (data) => {
     userInfo.setUserInfo(data);
     editPopup.close();
   }
 });
+
+popupWithImage.setEventListeners();
+addPopup.setEventListeners();
+editPopup.setEventListeners();
 
 editButton.addEventListener("click", function () {
   const data = userInfo.getUserInfo();
@@ -77,14 +80,10 @@ const cardList = new Section({
   cardListSection
 );
 
-export let validationElement = {};
 
 export function validateForms () {
-  validationElement[formElementEdit.name] = new Validator(validationParams, formElementEdit);
-  validationElement[formElementEdit.name].enableValidation();
-
-  validationElement[formElementAdd.name] = new Validator(validationParams, formElementAdd);
-  validationElement[formElementAdd.name].enableValidation();
+  validationEditPopup.enableValidation();
+  validationAddPopup.enableValidation();
 };
 
 validateForms ();

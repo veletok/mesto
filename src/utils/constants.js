@@ -1,3 +1,6 @@
+
+import {Validator} from '../script/Validator.js'
+
 export const popupEdit = document.querySelector(".popup-edit");
 export const popupAddItem = document.querySelector(".popup-add");
 export const popupImg = document.querySelector(".popup-image");
@@ -19,6 +22,8 @@ export const cardListSection = '.elements';
 export const profileTitle = document.querySelector(".profile__title");
 export const profileSubtitle = document.querySelector(".profile__subtitle");
 
+export const escCode = 27;
+
 export const validationParams = {
   formSelector: ".popup__form",
   inputSelector: ".popup__input",
@@ -27,6 +32,9 @@ export const validationParams = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__input-error_active",
 };
+
+export const validationEditPopup = new Validator(validationParams, formElementEdit);
+export const validationAddPopup = new Validator(validationParams, formElementAdd);
 
 export const initialCards = [{
   name: "Архыз",

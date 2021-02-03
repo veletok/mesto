@@ -1,20 +1,25 @@
 import {Popup} from './Popup.js'
 import {validationParams} from '../utils/constants.js';
 import {Validator} from './validator.js'
+import {popupAddButtonSubmit } from '../utils/constants.js';
 
 export class PopupWithForm extends Popup {
-  constructor(popupSelector, {handleFormSubmit}) {
+  constructor(popupSelector, validatorForm, {handleFormSubmit}) {
     super(popupSelector);
     this._popup = popupSelector;
     this._handleFormSubmit = handleFormSubmit;
     this._form = this._popup.querySelector(validationParams.formSelector);
+    this._validatorForm = validatorForm;
   }
 
   close(){
+    popupAddButtonSubmit.disabled = true;
+    popupAddButtonSubmit.classList.add(validationParams.inactiveButtonClass);
     this._inputList = this._popup.querySelectorAll(validationParams.inputSelector);
-    this._validationElement = new Validator(validationParams, this._form);
+    console.log(this._validatorForm)
     this._inputList.forEach((inputElement) => {
-      this._validationElement.hideInputError(inputElement);
+      console.log(this._validatorForm)
+      this._validatorForm.hideInputError(inputElement);
     });
 
     this._form.removeEventListener('submit', this._submitEvent)

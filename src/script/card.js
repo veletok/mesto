@@ -45,7 +45,7 @@ export class Card {
   }
   //Удаляет элемент
   _handleDeleteClick(evt) {
-    evt.target.closest(".element").remove();
+    this._element.remove()
     this._element = null;
   }
 }

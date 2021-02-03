@@ -1,14 +1,12 @@
-import {popupAddButtonSubmit } from '../utils/constants.js';
-
+import {escCode} from '../utils/constants.js';
 export class Popup {
   constructor(popupSelector) {
     this._popup = popupSelector;
   }
 
   open(){
+    document.addEventListener("keydown", this._handleEscClose);
     this._popup.classList.add("popup_opened");
-    popupAddButtonSubmit.disabled = true;
-    this.setEventListeners();
   }
 
   close(){
@@ -17,13 +15,12 @@ export class Popup {
   }
 
   _handleEscClose = (evt) => {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === escCode) {
       this.close();
     }
   }
 
   setEventListeners() {
-    document.addEventListener("keydown", this._handleEscClose);
     this._popup.addEventListener("mousedown", (evt) => {
       if(evt.srcElement.classList.contains("popup")) {
         this.close();
