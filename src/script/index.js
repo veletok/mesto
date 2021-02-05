@@ -69,12 +69,7 @@ function createCard (data) {
 const cardList = new Section({
   data: initialCards,
   renderer: (data) => {
-    const card = new Card(data, '#element-template',{
-      handleCardClick: () => {
-        popupWithImage.open(data);
-    }});
-    const cardElement = card.generateCard();
-    cardList.setItem(cardElement);
+    createCard(data);
     },
   },
   cardListSection
