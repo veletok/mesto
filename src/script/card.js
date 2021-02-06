@@ -8,7 +8,7 @@ export class Card {
 
   //Получаем template
   _getTemplate() {
-    const cardTemplate = document.querySelector(this._cardSelector).content.cloneNode(true);
+    const cardTemplate = document.querySelector(this._cardSelector).content.querySelector('.element').cloneNode(true);
     return cardTemplate;
   }
   //Генерируем новую карточку, возвращаем её
@@ -44,8 +44,8 @@ export class Card {
     evt.target.classList.toggle("element__like-button_active");
   }
   //Удаляет элемент
-  _handleDeleteClick(evt) {
-    this._element.remove()
+  _handleDeleteClick() {
+    this._element.remove();
     this._element = null;
   }
 }
