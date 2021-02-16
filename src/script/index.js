@@ -66,13 +66,13 @@ const editPopup = new PopupWithForm(
 
 export const deletePopup = new PopupWithForm(
   popupDelete, validationDeletePopup, {
-    handleFormSubmit:(data, cardelement) => {
+    handleFormSubmit:(data, cardElement) => {
       popupDeleteButtonSubmit.textContent = "Удаление.."
       api.deleteCard(data._id)
       .finally(() => {
         popupDeleteButtonSubmit.textContent = "Да"
-        cardelement.remove();
-        cardelement = null;
+        cardElement.remove();
+        cardElement = null;
         deletePopup.close();
       })
     }
