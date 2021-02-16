@@ -2,17 +2,20 @@ export default class UserInfo {
   constructor(profileTitle, profileSubtitle) {
     this._title = profileTitle; // text
     this._subtitle = profileSubtitle; // text
+    this._personID = null;
   }
 
   getUserInfo() {
     return {
-      profilename: this._title.textContent,
-      profileprofession: this._subtitle.textContent
+      name: this._title.textContent,
+      about: this._subtitle.textContent,
+      personID: this._personID
     };
   }
 
   setUserInfo(data) {
-    this._title.textContent = data.profilename;
-    this._subtitle.textContent = data.profileprofession;
+    this._title.textContent = data.name;
+    this._subtitle.textContent = data.about;
+    this._personID = data._id;
   }
 }

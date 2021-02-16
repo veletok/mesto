@@ -1,6 +1,5 @@
 import {Popup} from './Popup.js'
-import {validationParams} from '../utils/constants.js';
-import {popupAddButtonSubmit } from '../utils/constants.js';
+import {popupDelete, validationParams} from '../utils/constants.js';
 
 export class PopupWithForm extends Popup {
   constructor(popupSelector, validatorForm, {handleFormSubmit}) {
@@ -12,9 +11,15 @@ export class PopupWithForm extends Popup {
     this._submitButton = this._form.querySelector([validationParams.submitButtonSelector])
   }
 
+  open(){
+    this._form.addEventListener('submit', this._submitEvent)
+    super.open();
+  }
   close(){
-    this._submitButton.disabled = true;
-    this._submitButton.classList.add(validationParams.inactiveButtonClass);
+    if(this._popup != popupDelete){
+      this._submitButton.disabled = true;
+      this._submitButton.classList.add(validationParams.inactiveButtonClass);
+    }
     this._inputList = this._popup.querySelectorAll(validationParams.inputSelector);
     this._inputList.forEach((inputElement) => {
       this._validatorForm.hideInputError(inputElement);
@@ -28,7 +33,6 @@ export class PopupWithForm extends Popup {
   _getInputValues() {
     this._inputList = this._popup.querySelectorAll(validationParams.inputSelector);
     this._formValues = {};
-
     this._inputList.forEach((inputElement) => {
       this._formValues[inputElement.name] = inputElement.value;
     });
@@ -37,10 +41,21 @@ export class PopupWithForm extends Popup {
 
   _submitEvent = (evt) => {
     evt.preventDefault();
-    this._handleFormSubmit(this._getInputValues());
+    if(this._popup === popupDelete){
+      this._handleFormSubmit(this._cardDeleteData, this._cardElement);
+    }else{
+      this._handleFormSubmit(this._getInputValues());
+    }
   }
+
   setEventListeners() {
     super.setEventListeners();
     this._form.addEventListener('submit', this._submitEvent)
+  }
+
+  deletePopupData(data, element) {
+    this._cardDeleteData = data;
+    this._cardElement = element;
+
   }
 }

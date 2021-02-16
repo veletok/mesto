@@ -1,4 +1,4 @@
-import {escCode} from '../utils/constants.js';
+import {popupDelete, escCode, validationParams} from '../utils/constants.js';
 export class Popup {
   constructor(popupSelector) {
     this._popup = popupSelector;
@@ -26,5 +26,14 @@ export class Popup {
         this.close();
       }
     });
+
+    if(this._popup === popupDelete){
+      this._form = this._popup.querySelector(validationParams.formSelector);
+      this._form.addEventListener('submit', this._submitEvent)
+    }
+  }
+  _submitEvent = (evt) => {
+    evt.preventDefault();
+    this.close();
   }
 }

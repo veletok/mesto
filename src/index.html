@@ -16,15 +16,19 @@
       />
     </header>
     <section class="profile">
-      <img
+      <div class="profile__avatar-button">
+        <img
         src="<%=require('./images/profile/man.jpg')%>"
         alt="Жак-Ив Кусто"
-        class="profile__img"
-      />
+        class="profile__img">
+        <div class="profile__hover">
+          <div class="profile__hover_edit-button"></div>
+        </div>
+      </div>
       <div class="profile__info">
         <div class="profile__text">
-          <h1 class="profile__title">Жак-Ив Кусто</h1>
-          <p class="profile__subtitle">Исследователь океана</p>
+          <h1 class="profile__title">Загрузка..</h1>
+          <p class="profile__subtitle">Загрузка..</p>
         </div>
         <button type="button" class="profile__edit-button"></button>
       </div>
@@ -50,7 +54,7 @@
             id="name-input"
             class="popup__input popup__input_type_name"
             value="Жак-Ив Кусто"
-            name="profilename"
+            name="name"
             required
             placeholder="Имя"
             minlength="2"
@@ -62,14 +66,14 @@
             id="title-input"
             class="popup__input popup__input_type_title"
             value="Исследователь океана"
-            name="profileprofession"
+            name="about"
             required
             placeholder="О себе"
             minlength="2"
             maxlength="200"
           />
           <span id="title-input-error" class="popup__input-error"></span>
-          <button type="submit" class="popup__button-submit">Сохранить</button>
+          <button type="submit" class="popup__button-submit popup__button-submit_edit">Сохранить</button>
         </form>
       </div>
     </section>
@@ -107,6 +111,29 @@
       </div>
     </section>
 
+    <section class="popup popup-avatar">
+      <div class="popup__content">
+        <button
+          type="button"
+          class="popup__button-close popup__avatar-close"
+        ></button>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <form class="popup__form popup__form_avatar" name="avatar" novalidate>
+          <span id="placename-input-error" class="popup__input-error"></span>
+          <input
+            type="url"
+            id="avatarurl-input"
+            class="popup__input popup__input_type_img-src"
+            placeholder="Ссылка на картинку"
+            name="avatar"
+            required
+          />
+          <span id="avatarurl-input-error" class="popup__input-error"></span>
+          <button type="submit" class="popup__button-submit popup__button-submit_avatar">Сохранить</button>
+        </form>
+      </div>
+    </section>
+
     <section class="popup popup-image">
       <div class="popup-image__container">
         <button
@@ -118,13 +145,29 @@
       </div>
     </section>
 
+    <section class="popup popup-delete">
+      <div class="popup__content">
+        <button
+          type="button"
+          class="popup__button-close popup__delete-close"
+        ></button>
+        <h3 class="popup__title popup__delete-title">Вы уверены?</h3>
+        <form class="popup__form popup__form_delete" name="delete" novalidate>
+          <button type="submit" class="popup__button-submit popup__button-submit_delete">Да</button>
+        </form>
+      </div>
+    </section>
+
     <template id="element-template">
       <li class="element">
         <button class="element__delete-button" type="button"></button>
         <img class="element__img" alt="#" src="#" />
         <div class="element__flex">
           <h4 class="element__text"></h4>
-          <button type="button" class="element__like-button"></button>
+          <div class="element__column">
+            <button type="button" class="element__like-button"></button>
+            <p class="element__count">1</p>
+          </div>
         </div>
       </li>
     </template>

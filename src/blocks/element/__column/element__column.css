@@ -1,6 +1,6 @@
-.popup-image__container {
+.element__column{
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
+  height: fit-content;
 }
