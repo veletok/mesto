@@ -28,7 +28,10 @@ api.
   getPersonInfo()
   .then((data)=> {
     userInfo.setUserInfo(data);
-})
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
 const popupWithImage = new PicturePopup(popupImg);
 
 const addPopup = new PopupWithForm(
