@@ -1,4 +1,4 @@
-export class Validator {
+export class FormValidator {
   constructor(validationParams, formElement) {
     this._validationParams = validationParams;
     this._formElement = formElement;
@@ -19,11 +19,11 @@ export class Validator {
     inputElement.classList.add(this._validationParams.inputErrorClass);
   }
 
-  hideInputError(inputElement) {
-    this._errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
-    this._errorElement.classList.remove(this._validationParams.errorClass);
-    this._errorElement.textContent = "";
-    inputElement.classList.remove(this._validationParams.inputErrorClass);
+    hideInputError(inputElement) {
+      this._errorElement = this._formElement.querySelector(`#${inputElement.id}-error`);
+      this._errorElement.classList.remove(this._validationParams.errorClass);
+      this._errorElement.textContent = "";
+      inputElement.classList.remove(this._validationParams.inputErrorClass);
   }
 
   _checkInputValidity(inputElement) {
@@ -51,10 +51,16 @@ export class Validator {
     this._submitButton = this._formElement.querySelector(
       this._validationParams.submitButtonSelector
     );
+
+    this._formElement.addEventListener('reset', () => {
+      this._inputList.forEach((inputElement) => {
+          this._submitButton.disabled = true;
+          this._submitButton.classList.add(this._validationParams.inactiveButtonClass);
+          this.hideInputError(inputElement);
+      })
+    });
+
     this._inputList.forEach((inputElement) => {
-      if (inputElement.classList.contains('popup__input_type_name')) {
-        this._buttonToogle(inputElement);
-      }
       inputElement.addEventListener("input", () => {
         this._buttonToogle(inputElement);
       });

@@ -1,7 +1,8 @@
 export default class UserInfo {
-  constructor(profileTitle, profileSubtitle) {
+  constructor(profileTitle, profileSubtitle, profileImage) {
     this._title = profileTitle; // text
     this._subtitle = profileSubtitle; // text
+    this._profileImage = profileImage;
     this._personID = null;
   }
 
@@ -9,7 +10,8 @@ export default class UserInfo {
     return {
       name: this._title.textContent,
       about: this._subtitle.textContent,
-      personID: this._personID
+      personID: this._personID,
+      avatar : this._profileImage
     };
   }
 
@@ -17,5 +19,6 @@ export default class UserInfo {
     this._title.textContent = data.name;
     this._subtitle.textContent = data.about;
     this._personID = data._id;
+    this._profileImage.src = data.avatar;
   }
 }

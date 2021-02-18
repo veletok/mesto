@@ -22,6 +22,7 @@ export default class Api{
         about: personAbout
       })
     })
+    .then(res => this._checkRequestResult(res))
     .catch(error => this._errorHandler(error));
   }
 

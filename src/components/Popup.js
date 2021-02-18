@@ -1,7 +1,7 @@
-import {popupDelete, escCode, validationParams} from '../utils/constants.js';
 export class Popup {
   constructor(popupSelector) {
     this._popup = popupSelector;
+    this._popupCloseButton = this._popup.querySelector('.popup__button-close');
   }
 
   open(){
@@ -15,25 +15,21 @@ export class Popup {
   }
 
   _handleEscClose = (evt) => {
-    if (evt.keyCode === escCode) {
+    if (evt.keyCode === 27) {
       this.close();
     }
   }
 
   setEventListeners() {
+    //закрытие попапа по кнопке
+    this._popupCloseButton.addEventListener("click", () => {
+      this.close();
+    });
+
     this._popup.addEventListener("mousedown", (evt) => {
       if(evt.srcElement.classList.contains("popup")) {
         this.close();
       }
     });
-
-    if(this._popup === popupDelete){
-      this._form = this._popup.querySelector(validationParams.formSelector);
-      this._form.addEventListener('submit', this._submitEvent)
-    }
-  }
-  _submitEvent = (evt) => {
-    evt.preventDefault();
-    this.close();
   }
 }

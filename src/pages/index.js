@@ -1,13 +1,20 @@
 import '../pages/index.css';
-import {Card} from './Card.js';
-import {popupDeleteButtonSubmit, validationDeletePopup, popupAddButtonSubmit, popupEditButtonSubmit, popupAvatarButtonSubmit, buttonPopupAvatarClose, avatarButton, validationAvatarPopup, popupAvatar, buttonPopupDeleteClose, popupDelete, profileImage, validationAddPopup, validationEditPopup, profileTitle, profileSubtitle, popupImg, popupEdit, popupAddItem, editButton, addButton, buttonPopupAddClose, buttonPopupEditClose, buttonPopupImageClose, name, about, cardListSection} from '../utils/constants.js';
-import {PopupWithImage} from './PopupWithImage.js';
-import {PopupWithForm} from './PopupWithForm.js';
-import Section from './Section.js';
-import UserInfo from './Userinfo.js';
-import Api from './Api.js';
+import {Card} from '../components/Card.js';
+import {formElementEdit, formElementAdd, formElementAvatar, formElementDelete, validationParams, popupDeleteButtonSubmit, popupAddButtonSubmit, popupEditButtonSubmit, popupAvatarButtonSubmit, avatarButton, popupAvatar, popupDelete, profileImage, profileTitle, profileSubtitle, popupImg, popupEdit, popupAddItem, editButton, addButton, name, about, cardListSection} from '../utils/constants.js';
+import {PicturePopup} from '../components/PicturePopup.js';
+import {PopupWithForm} from '../components/PopupWithForm.js';
+import {DeletePopup} from '../components/DeletePopup.js';
+import Section from '../components/Section.js';
+import UserInfo from '../components/Userinfo.js';
+import Api from '../components/Api.js';
+import {FormValidator} from '../components/FormValidator.js'
 
-const userInfo = new UserInfo(profileTitle, profileSubtitle);
+export const validationEditPopup = new FormValidator(validationParams, formElementEdit);
+export const validationAddPopup = new FormValidator(validationParams, formElementAdd);
+export const validationAvatarPopup = new FormValidator(validationParams, formElementAvatar);
+export const validationDeletePopup = new FormValidator(validationParams, formElementDelete);
+
+const userInfo = new UserInfo(profileTitle, profileSubtitle, profileImage);
 
 export const api = new Api({
   url: "https://mesto.nomoreparties.co/v1/cohort-20/",
@@ -21,9 +28,8 @@ api.
   getPersonInfo()
   .then((data)=> {
     userInfo.setUserInfo(data);
-    profileImage.src = data.avatar;
 })
-const popupWithImage = new PopupWithImage(popupImg);
+const popupWithImage = new PicturePopup(popupImg);
 
 const addPopup = new PopupWithForm(
   popupAddItem, validationAddPopup, {
@@ -35,36 +41,45 @@ const addPopup = new PopupWithForm(
       addPopup.close();
       popupAddButtonSubmit.textContent = "Сохранить"
     })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
-});
+}, validationParams);
 
 const avatarPopup = new PopupWithForm(
   popupAvatar, validationAvatarPopup, {
   handleFormSubmit: (data) => {
     popupAvatarButtonSubmit.textContent = "Сохранение.."
     api.setAvatar(data.avatar)
-    .then(() => {
-      profileImage.src = data.avatar;
+    .then((data) => {
+      userInfo.setUserInfo(data);
       avatarPopup.close();
       popupAvatarButtonSubmit.textContent = "Сохранить"
     })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
-});
+}, validationParams);
 
 const editPopup = new PopupWithForm(
   popupEdit, validationEditPopup, {
   handleFormSubmit: (data) => {
     popupEditButtonSubmit.textContent = "Сохранение.."
     api.setPersonInfo(data.name, data.about)
-    .finally(() => {
+    .then((result) => {
       popupEditButtonSubmit.textContent = "Сохранить"
-      userInfo.setUserInfo(data);
+      userInfo.setUserInfo(result);
       editPopup.close();
     })
+    .catch((error)=>{
+      console.log(error);
+    })
   }
-});
+}, validationParams);
 
-export const deletePopup = new PopupWithForm(
+export const deletePopup = new DeletePopup(
   popupDelete, validationDeletePopup, {
     handleFormSubmit:(data, cardElement) => {
       popupDeleteButtonSubmit.textContent = "Удаление.."
@@ -75,8 +90,11 @@ export const deletePopup = new PopupWithForm(
         cardElement = null;
         deletePopup.close();
       })
+      .catch((error)=>{
+        console.log(error);
+      })
     }
-  });
+  }, validationParams);
 
 popupWithImage.setEventListeners();
 addPopup.setEventListeners();
@@ -91,11 +109,6 @@ editButton.addEventListener("click", function () {
   editPopup.open();
 });
 
-
-buttonPopupEditClose.addEventListener("click", function () {
-  editPopup.close();
-});
-
 addButton.addEventListener("click", function () {
   addPopup.open();
 });
@@ -104,21 +117,6 @@ avatarButton.addEventListener("click", function () {
   avatarPopup.open();
 });
 
-buttonPopupAvatarClose.addEventListener("click", function () {
-  avatarPopup.close();
-});
-
-buttonPopupAddClose.addEventListener("click", function () {
-  addPopup.close();
-});
-
-buttonPopupDeleteClose.addEventListener("click", function () {
-  deletePopup.close();
-});
-
-buttonPopupImageClose.addEventListener("click", function () {
-  popupWithImage.close();
-});
 //Функция создания карты
 function createCard (data) {
   const userInfoData = userInfo.getUserInfo();
@@ -129,18 +127,23 @@ function createCard (data) {
   {deleteClick: (data, element) => {
     deletePopup.deletePopupData(data, element);
     deletePopup.open();
-    deletePopup.setEventListeners();
   }},
   {setLikeAPI: (callback) => {
     api.setLike(data._id)
     .then((result) => {
       callback (result);
     })
+    .catch((error)=>{
+      console.log(error);
+    })
   }},
   {removeLikeAPI: (callback) => {
     api.removeLike(data._id)
     .then((result) => {
       callback (result);
+    })
+    .catch((error)=>{
+      console.log(error);
     })
   }},
   userInfoData);
@@ -151,6 +154,9 @@ function createCard (data) {
 const cardList = new Section({
   data: api.getCardsList().then((data)=> {
     return data.reverse();
+  })
+  .catch((error)=>{
+    console.log(error);
   }),
   renderer: (data) => {
     createCard(data);
